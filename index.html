@@ -1,10 +1,67 @@
 <!DOCTYPE html>
 <html>
-<head><title>Cambiar contraseña</title></head>
+<head>
+    <title>Cambiar contraseña</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f3f4f6;
+        }
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 360px;
+        }
+        h2 { margin: 0 0 8px; font-size: 20px; }
+        p { margin: 0 0 24px; color: #6b7280; font-size: 14px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        button:disabled { background: #d1d5db; cursor: not-allowed; }
+        .mensaje {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+        .exito { background: #dcfce7; color: #15803d; display: block; }
+        .error { background: #fee2e2; color: #dc2626; display: block; }
+    </style>
+</head>
 <body>
-<h2>Nueva contraseña</h2>
-<input type="password" id="password" placeholder="Nueva contraseña"/>
-<button onclick="cambiar()">Cambiar</button>
+<div class="card">
+    <h2>Nueva contraseña</h2>
+    <p>Escribe tu nueva contraseña para Agro-Hogar</p>
+    <input type="password" id="password" placeholder="Nueva contraseña" minlength="6"/>
+    <button id="btn" onclick="cambiar()">Cambiar contraseña</button>
+    <div id="mensaje" class="mensaje"></div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -15,9 +72,32 @@
 
     async function cambiar() {
         const password = document.getElementById('password').value
-        const {error} = await supabase.auth.updateUser({password})
-        if (error) alert('Error: ' + error.message)
-        else alert('¡Contraseña cambiada!')
+        const btn = document.getElementById('btn')
+        const mensaje = document.getElementById('mensaje')
+
+        if (password.length < 6) {
+            mensaje.className = 'mensaje error'
+            mensaje.textContent = 'La contraseña debe tener al menos 6 caracteres.'
+            return
+        }
+
+        btn.disabled = true
+        btn.textContent = 'Cambiando...'
+        mensaje.className = 'mensaje'
+
+        const { error } = await supabase.auth.updateUser({ password })
+
+        if (error) {
+            mensaje.className = 'mensaje error'
+            mensaje.textContent = 'Error: ' + error.message
+            btn.disabled = false
+            btn.textContent = 'Cambiar contraseña'
+        } else {
+            mensaje.className = 'mensaje exito'
+            mensaje.textContent = '✓ Contraseña cambiada exitosamente. Ya puedes cerrar esta página.'
+            btn.disabled = true
+            btn.textContent = 'Listo'
+        }
     }
 </script>
 </body>
