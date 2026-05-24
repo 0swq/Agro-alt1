@@ -1,5 +1,5 @@
-
-const client = window.supabase.createClient(
+const { createClient } = window.supabase
+const client = createClient(
     'https://awgtrkchonoambjvqnxw.supabase.co',
     'TU_ANON_KEY'
 )
@@ -31,4 +31,9 @@ async function cambiar() {
         btn.disabled = true
         btn.textContent = 'Listo'
     }
+}
+
+function toggleVer() {
+    const input = document.getElementById('password')
+    input.type = input.type === 'password' ? 'text' : 'password'
 }

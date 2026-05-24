@@ -13,13 +13,18 @@
     <p class="text-muted mb-4" style="font-size: 14px;">Escribe tu nueva contraseña para Agro-Hogar</p>
 
     <div class="mb-3">
-        <label for="password"></label><input
-                type="password"
-                id="password"
-                class="form-control"
-                placeholder="Nueva contraseña"
-                minlength="6"
-        />
+        <div class="input-group">
+            <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Nueva contraseña"
+                    minlength="6"
+            />
+            <button class="btn btn-outline-secondary" type="button" onclick="toggleVer()">
+                <span id="iconoOjo">👁</span>
+            </button>
+        </div>
     </div>
 
     <button id="btn" class="btn btn-success w-100" onclick="cambiar()">
