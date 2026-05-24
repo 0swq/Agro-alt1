@@ -4,7 +4,6 @@ const client = createClient(
     'TU_ANON_KEY'
 )
 
-// Leer token del hash que Supabase agrega al redirigir
 const hashParams = new URLSearchParams(window.location.hash.substring(1))
 const accessToken = hashParams.get('access_token')
 const refreshToken = hashParams.get('refresh_token')
@@ -12,7 +11,8 @@ const refreshToken = hashParams.get('refresh_token')
 if (accessToken) {
     client.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
 }
-
+console.log('hash:', window.location.hash)
+console.log('search:', window.location.search)
 async function cambiar() {
     const password = document.getElementById('password').value
     const btn = document.getElementById('btn')
